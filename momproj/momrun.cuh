@@ -43,7 +43,7 @@ void setStrings(std::string data, std::string save);
 void freeMemory();
 void readTrainSet(std::string learnsetname, bool discard = false, size_t* numDiscards = NULL);
 float runSim(LayerCollection layers, bool train, float customStepFactor, bool print = false);
-float testSim(LayerCollection layers);
+float testSim(LayerCollection layers, std::string ofname = "");
 void saveWeights(LayerCollection layers, std::string fname);
 void loadWeights(LayerCollection layers, std::string fname);
 

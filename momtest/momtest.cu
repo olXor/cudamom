@@ -8,7 +8,7 @@
 #define localsavename "weights"
 #define projtrainstring "testset3"
 
-//#define LOCAL
+#define LOCAL
 
 int main() {
 	srand(time(NULL));
@@ -48,7 +48,7 @@ int main() {
 	std::cout << numDiscards[0] << "/" << numDiscards[1] << " samples discarded." << std::endl;
 
 	std::cout << "Running sim: " << std::endl;
-	float error = testSim(layers);
+	float error = testSim(layers, "testresults");
 	std::cout << "Error: " << error << std::endl;
 	
 #ifdef LOCAL

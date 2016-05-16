@@ -790,7 +790,7 @@ float stdev(std::vector<float> in, float mean) {
 	return stdev;
 }
 
-float testSim(LayerCollection layers) {
+float testSim(LayerCollection layers, std::string ofname) {
 	float* d_inputs;
 	if (layers.numConvolutions > 0) {
 		if (layers.convPars[0].numInputLocs != NUM_INPUTS || layers.convPars[0].numInputNeurons != 1)
@@ -813,6 +813,11 @@ float testSim(LayerCollection layers) {
 	if (trainset.size() > 0)
 		currentSample = trainset[0].samplenum;
 	std::vector<float> sampleoutputs;
+
+	std::ofstream outfile;
+	if(ofname != "")
+		outfile.open(ofname);
+
 	for (size_t i = 0; i < trainset.size(); i++) {
 		//----calculate----
 		checkCudaErrors(cudaMemcpy(d_inputs, &trainset[i].inputs[0], NUM_INPUTS*sizeof(float), cudaMemcpyHostToDevice));
@@ -841,6 +846,9 @@ float testSim(LayerCollection layers) {
 			error += fabs(newerror);
 
 			std::cout << "Sample " << currentSample << "| Actual: " << correct << " Measured: " << newmean << " +/- " << newstdev << " Error: " << newerror << std::endl;
+			if (outfile.is_open()) {
+				outfile << currentSample << " " << correct << " " << newmean << " " << newstdev << " " << newerror << std::endl;
+			}
 
 			sampleoutputs.clear();
 			if (i < trainset.size() - 1)
